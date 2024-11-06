@@ -1,0 +1,45 @@
+services:
+  # Frontend (Vue.js)
+  frontend:
+    build:
+      context: ./frontend  # Contexte de construction pour le frontend
+      dockerfile: Dockerfile  # Utilisation du Dockerfile dans le dossier frontend
+    ports:
+      - "8080:80"  # Mappe le port 80 du conteneur au port 8080 de l'hôte
+    depends_on:
+      - backend  # Assure que le backend est prêt avant de démarrer le frontend
+    environment:
+      - VUE_APP_API_URL=http://backend:5000  # URL de l'API backend
+    networks:
+      - app-network
+
+  # Backend (Node.js)
+  backend:
+    build:
+      context: ./backend  # Contexte de construction pour le backend
+      dockerfile: Dockerfile  # Utilisation du Dockerfile dans le dossier backend
+    ports:
+      - "5000:5000"  # Mappe le port 5000 du conteneur au port 5000 de l'hôte
+    environment:
+      - MONGO_URI=mongodb://db:27017/mydb  # URI de connexion MongoDB
+    depends_on:
+      - db  # Assure que la base de données MongoDB est prête avant de démarrer le backend
+    networks:
+      - app-network
+
+  # MongoDB
+  db:
+    build:
+      context: ./db  # Contexte de construction pour le backend
+      dockerfile: Dockerfile  # Utilisation du Dockerfile dans le dossier backend
+    ports:
+      - "27017:27017"  # Mappe le port 27017 du conteneur au port 27017 de l'hôte
+    volumes:
+      - ./mongo/data:/data/db  # Persiste les données dans un répertoire local
+    networks:
+      - app-network
+
+# Définition du réseau interne pour la communication entre les services
+networks:
+  app-network:
+    driver: bridge
