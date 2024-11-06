@@ -1,0 +1,17 @@
+# Étape 1 : Construire l'application Vue.js
+FROM node:16 AS build
+
+# Définir le répertoire de travail
+WORKDIR /app
+
+# Copier les fichiers package.json et package-lock.json (ou yarn.lock)
+COPY package*.json ./
+
+# Installer les dépendances
+RUN npm install
+
+# Copier le reste du code source
+COPY . .
+
+# Construire l'application pour la production
+RUN npm run build
