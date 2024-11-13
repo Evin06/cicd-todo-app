@@ -24,7 +24,11 @@ router.post("/add", async (req, res) => {
         console.error("CREATE TODO: ", err);
         res.status(400).json("Erreur lors de la création du todo");
       }
+    } else {
+      res.status(400).json(null);
     }
+  } else {  
+    res.status(400).json(null);
   }
 });
 
@@ -43,6 +47,8 @@ router.patch("/:id", async (req, res) => {
       console.error("UPDATE TODO: ", err);
       res.status(400).json(null);
     }
+  } else {
+    res.status(400).json(null);
   }
 });
 
@@ -57,10 +63,12 @@ router.post("/:id", async (req, res) => {
       console.error("DELETE TODO: ", err);
       res.status(400).json(null);
     }
+  } else {
+    res.status(400).json(null);
   }
 });
 
-// get all todos of user
+// get all todo of user
 router.get("/", async (req, res) => {
   const token = req.cookies?.token;
   if (token) {
@@ -75,10 +83,14 @@ router.get("/", async (req, res) => {
           res.status(404).json(null);
         }
       } catch (err) {
-        console.error("GET TODOS: ", err);
+        console.error("GET ALL TODO: ", err);
         res.status(400).json(null);
       }
+    } else {
+      res.status(400).json(null);
     }
+  } else {
+    res.status(400).json(null);
   }
 });
 

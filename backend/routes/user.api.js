@@ -23,11 +23,11 @@ router.post("/add", async (req, res) => {
   });
   try {
     await user.save();
-    res.json(cleanUser(user));
+    res.status(200).json(cleanUser(user));
   } catch (err) {
     console.error("CREATE USER: ", err);
     let errorMsg = "Erreur lors de l'inscription!";
-    if(err && err.errorResponse.code === 11000) {
+    if(err && err.code === 11000) {
       errorMsg = "Un compte avec cet email exist déjà!";
     }
     res.status(400).json(errorMsg);
@@ -44,13 +44,14 @@ router.delete("/delete", async (req, res) => {
       try {
         await TodoModel.deleteMany(query);
         await UserModel.findOneAndDelete(query);
-        res.status(200).json(null);
-        res.clearCookie('token');
+        res.status(200).clearCookie('token').json(null);
       } catch (err) {
         console.error("DELETE USER: ", err);
         res.status(400).json("Erreur lors de la suppression de l'utilisateur");
       }
     }
+  } else {
+    res.status(400).json(null);
   }
 });
 
@@ -80,6 +81,8 @@ router.patch("/edit", async (req, res) => {
         res.status(400).json(null);
       }
     }
+  } else {
+    res.status(400).json(null);
   }
 });
 
@@ -101,6 +104,8 @@ router.get("/", async (req, res) => {
       console.error("GET USER: ", err);
       res.status(400).json(null);
     }
+  } else {
+    res.status(400).json(null);
   }
 });
 

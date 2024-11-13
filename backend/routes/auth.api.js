@@ -23,15 +23,19 @@ router.post('/', async (req, res) => {
         algorithm: 'RS256',
       });
       res.cookie('token', token);
-      res.json(cleanUser(user));
+      res.status(200).json(cleanUser(user));
     } else {
-      console.error('LOGIN: Mauvais email ou mot de passe!');
       res.status(400).json('Mauvais email ou mot de passe!');
     }
   } else {
-    console.error('LOGIN: Utilisateur non trouvé');
     res.status(400).json('Utilisateur non trouvé');
   }
 });
+
+router.delete('/', async (req, res) => {
+  res.clearCookie('token');
+  res.end();
+});
+
 
 module.exports = router;

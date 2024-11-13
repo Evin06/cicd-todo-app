@@ -1,0 +1,53 @@
+name: CI/CD Workflow
+
+on:
+  push:
+    branches:
+      - main  # Déclenchement du déploiement de test sur chaque push sur la branche principale
+      
+jobs:
+  test-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Set up Node.js (Frontend & Backend)
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'  # Spécifiez la version Node.js selon vos besoins
+
+      - name: Cache Node modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            frontend/node_modules
+            backend/node_modules
+            ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # Installation des dépendances et audit pour le frontend
+      - name: Install dependencies and audit (Frontend)
+        working-directory: ./frontend
+        run: |
+          npm install
+          npm audit
+
+      # Installation des dépendances et audit pour le backend
+      - name: Install dependencies and audit (Backend)
+        working-directory: ./backend
+        run: |
+          npm install
+          npm audit
+
+      # Linting pour le frontend
+      - name: Linting du code (Frontend)
+        working-directory: ./frontend
+        run: npm run lint
+
+      # Linting pour le backend
+      - name: Linting du code (Backend)
+        working-directory: ./backend
+        run: npm run lint
