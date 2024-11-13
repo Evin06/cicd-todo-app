@@ -21,20 +21,33 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            node_modules
+            frontend/node_modules
+            backend/node_modules
             ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/frontend/package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # Audit des packages pour éviter les vulnérabilités
-      - name: Audit des packages (Frontend et Backend)
+      # Installation des dépendances et audit pour le frontend
+      - name: Install dependencies and audit (Frontend)
+        working-directory: ./frontend
         run: |
           npm install
           npm audit
 
-      # Linting pour éviter des erreurs potentielles dans le code
-      - name: Linting du code (Frontend et Backend)
+      # Installation des dépendances et audit pour le backend
+      - name: Install dependencies and audit (Backend)
+        working-directory: ./backend
         run: |
-          npm run lint
+          npm install
+          npm audit
 
+      # Linting pour le frontend
+      - name: Linting du code (Frontend)
+        working-directory: ./frontend
+        run: npm run lint
+
+      # Linting pour le backend
+      - name: Linting du code (Backend)
+        working-directory: ./backend
+        run: npm run lint
