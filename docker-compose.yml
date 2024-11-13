@@ -1,0 +1,41 @@
+services:
+  
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - dist:/dist
+    command: "echo Frontend built successfully"
+
+  # Backend (Node.js)    
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - dist:/app/public
+    ports:
+      - "3000:3000"
+    depends_on:
+      - frontend
+    networks:
+      - app-network
+
+# MongoDB
+  db:
+    image: mongo:latest  # Utilisation de l'image officielle MongoDB
+    ports:
+      - "27017:27017"  # Mappe le port 27017 du conteneur au port 27017 de l'hôte
+    volumes:
+      - ./mongo/data:/data/db  # Persiste les données dans un répertoire local
+    networks:
+      - app-network
+
+# Définition du réseau interne pour la communication entre les services
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dist:
