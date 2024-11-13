@@ -17,13 +17,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+        # Étape 2: Vérifier les fichiers modifiés dans le commit
+      - name: Get modified files
+        id: files
+        run: |
+          # Liste les fichiers modifiés dans ce commit
+          MODIFIED_FILES=$(git diff --name-only ${{ github.sha }}^ ${{ github.sha }})
+          echo "Modified files: $MODIFIED_FILES"
+          echo "::set-output name=modified_files::$MODIFIED_FILES"
+          
       - name: Install Dependencies frontend
-        working-directory: ./frontend
+        if: contains(steps.files.outputs.modified_files, 'frontend/')
         run: |
           npm install
 
       - name: Install Dependencies backend
-        working-directory: ./backend
+        if: contains(steps.files.outputs.modified_files, 'backend/')
         run: |
           npm install
 
@@ -35,14 +44,14 @@ jobs:
 
       # Build et push l'image backend uniquement si des modifications sont détectées dans le dossier backend
       - name: Build and Push Backend Image
-        if: github.event_name == 'push' && contains(github.event.head_commit.message, 'backend/')
+        if: contains(steps.files.outputs.modified_files, 'backend/')
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend:latest -f backend/Dockerfile ./backend
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend:latest -f backend/Dockerfile .
           docker push ${{ secrets.DOCKER_USERNAME }}/backend:latest
 
       # Build et push l'image frontend uniquement si des modifications sont détectées dans le dossier frontend
       - name: Build and Push Frontend Image
-        if: github.event_name == 'push' && contains(github.event.head_commit.message, 'frontend/')
+        if: contains(steps.files.outputs.modified_files, 'frontend/')
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest -f frontend/Dockerfile ./frontend
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest -f frontend/Dockerfile .
           docker push ${{ secrets.DOCKER_USERNAME }}/frontend:latest
