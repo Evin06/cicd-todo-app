@@ -32,11 +32,13 @@ jobs:
       - name: Install Dependencies frontend
         if: contains(steps.files.outputs.modified_files, 'frontend/')
         run: |
+          cd frontend
           npm install
 
       - name: Install Dependencies backend
         if: contains(steps.files.outputs.modified_files, 'backend/')
         run: |
+          cd backend
           npm install
 
       - name: Login to Docker Hub
