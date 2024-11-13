@@ -3,7 +3,7 @@ name: Docker Build and Push
 on:
   push:
     branches:
-      - dev
+      - main
   workflow_dispatch:
 
 jobs:
@@ -22,11 +22,11 @@ jobs:
 
       - name: Build Backend Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend:latest ./backend
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend:latest .
 
       - name: Build Frontend Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest ./frontend
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest .
 
       - name: Push Backend Image
         run: |
