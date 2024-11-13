@@ -21,6 +21,9 @@ jobs:
       - name: Get modified files
         id: files
         run: |
+          # Récupérer l'historique complet si ce n'est pas déjà fait
+          git fetch --unshallow
+          
           # Récupérer les fichiers modifiés entre le commit précédent et le commit actuel
           MODIFIED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
           echo "Modified files: $MODIFIED_FILES"
