@@ -6,7 +6,7 @@
     "start": "node --watch index.js",
     "start:env": "node --env-file=.env --watch index.js",
     "test:dev": "jest --watch",
-    "test:ci": "jest --coverage --ci",
+    "test:ci": "jest --coverage --ci --silent",
     "lint": "eslint"
   },
   "keywords": [],
