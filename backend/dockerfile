@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Récupérer les fichiers dist du frontend depuis l'image sur Docker Hub
-COPY --from=evinp/frontend:latest /dist ./public
+COPY --from=evinp/frontend:latest /dist ./dist
 
 # Démarrer l'application backend
 CMD ["npm", "start"]
