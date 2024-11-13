@@ -22,4 +22,4 @@ FROM alpine:3.16
 # Copier les fichiers dist du build précédent
 COPY --from=build /app/dist /dist
 
-# Le dossier /dist sera partagé avec le backend grâce à docker-compose
+# Le dossier /dist sera partagé avec le backend grâce à docker-comp
