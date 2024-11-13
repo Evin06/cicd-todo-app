@@ -1,13 +1,24 @@
 services:
-  # Backend (Node.js)
+  
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - dist:/dist
+    command: "echo Frontend built successfully"
+
+  # Backend (Node.js)    
   backend:
     build:
-      context: ./backend  # Contexte de construction pour le backend
-      dockerfile: Dockerfile  # Utilisation du Dockerfile dans le dossier backend
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - dist:/app/public
     ports:
-      - "3000:3000"  # Mappe le port 5000 du conteneur au port 5000 de l'hôte
+      - "3000:3000"
     depends_on:
-      - db  # Assure que la base de données MongoDB est prête avant de démarrer le backend
+      - frontend
     networks:
       - app-network
 
@@ -25,3 +36,6 @@ services:
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  dist:

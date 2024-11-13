@@ -1,15 +1,20 @@
-# Utiliser l'image officielle MongoDB
-FROM node:latest
+# Utiliser une image Node pour le backend
+FROM node:18
 
-# dossier de travail
+# Définir le dossier de travail
 WORKDIR /app
 
-COPY package.json /app
+# Copier les fichiers package.json et package-lock.json pour installer les dépendances
+COPY package.json ./
 
+# Installer les dépendances
 RUN npm install
 
-COPY . /app
+# Copier les fichiers de l'application backend
+COPY . .
 
-EXPOSE 3000
+# Récupérer les fichiers dist du frontend depuis l'image sur Docker Hub
+COPY --from=evinp/frontend:latest /dist ./public
 
-CMD ["npm","start"]
+# Démarrer l'application backend
+CMD ["npm", "start"]

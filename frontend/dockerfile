@@ -1,17 +1,25 @@
-# Étape 1 : Construire l'application Vue.js
-FROM node:16 AS build
+# Étape 1 : Build du frontend
+FROM node:18 AS build
 
-# Définir le répertoire de travail
+# Définir le dossier de travail
 WORKDIR /app
 
-# Copier les fichiers package.json et package-lock.json (ou yarn.lock)
+# Copier les fichiers package.json et package-lock.json pour installer les dépendances
 COPY package*.json ./
 
 # Installer les dépendances
 RUN npm install
 
-# Copier le reste du code source
+# Copier tous les fichiers du frontend
 COPY . .
 
-# Construire l'application pour la production
+# Builder le frontend (cela génère les fichiers dans le dossier dist)
 RUN npm run build
+
+# Étape 2 : Créer une image légère avec seulement les fichiers dist
+FROM alpine:3.16
+
+# Copier les fichiers dist du build précédent
+COPY --from=build /app/dist /dist
+
+# Le dossier /dist sera partagé avec le backend grâce à docker-compose
