@@ -1,24 +1,10 @@
 services:
-  
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    volumes:
-      - dist:/dist
-    command: "echo Frontend built successfully"
 
   # Backend (Node.js)    
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    volumes:
-      - dist:/app/public
+    image: evinp/backend:latest  # Utilisation de l'image officielle MongoDB
     ports:
       - "3000:3000"
-    depends_on:
-      - frontend
     networks:
       - app-network
 
@@ -36,6 +22,3 @@ services:
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  dist:
