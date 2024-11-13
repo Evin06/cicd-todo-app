@@ -58,5 +58,5 @@ jobs:
       - name: Build and Push Frontend Image
         if: contains(steps.files.outputs.modified_files, 'frontend/')
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest -f frontend/Dockerfile .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest -f frontend/Dockerfile frontend/
           docker push ${{ secrets.DOCKER_USERNAME }}/frontend:latest
