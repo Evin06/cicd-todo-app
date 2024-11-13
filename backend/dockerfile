@@ -18,3 +18,4 @@ COPY --from=evinp/frontend:latest /dist ./dist
 
 # Démarrer l'application backend
 CMD ["npm", "start"]
+
