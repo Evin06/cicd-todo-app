@@ -14,7 +14,7 @@ services:
     ports:
       - "27017:27017"  # Mappe le port 27017 du conteneur au port 27017 de l'hôte
     volumes:
-      - ./mongo/data:/data/db  # Persiste les données dans un répertoire local
+      - mongo-data:/data:/data/db  # Persiste les données dans un répertoire local
     networks:
       - app-network
 
@@ -22,3 +22,7 @@ services:
 networks:
   app-network:
     driver: bridge
+
+# Définition des volumes globaux
+volumes:
+  mongo-data:
