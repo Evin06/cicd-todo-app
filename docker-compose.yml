@@ -5,6 +5,9 @@ services:
     image: evinp/backend:latest  # Utilisation de l'image officielle MongoDB
     ports:
       - "3000:3000"
+    environment:
+      - DB_URL=mongodb://localhost:27017/mydatabase
+      - TEST=saladeverte
     networks:
       - app-network
 

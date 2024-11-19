@@ -3,7 +3,7 @@ name: Docker Build and Push
 on:
   push:
     branches:
-      - dev
+      - main
   workflow_dispatch:
 
 jobs:
@@ -13,12 +13,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
-      - name: Generate .env for Backend
-        working-directory: ./backend
-        run: |
-            echo "DB_URL=${{ secrets.DB_URL }}" >> .env
-            echo "DB_TEST_URL=${{ secrets.DB_URL }}" >> .env
 
       - name: Install Dependencies frontend
         working-directory: ./frontend
