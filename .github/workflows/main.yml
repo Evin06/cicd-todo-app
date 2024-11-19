@@ -10,12 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         
       - name: Set up Node.js (Frontend & Backend)
         uses: actions/setup-node@v3
         with:
-          node-version: '18'  # Spécifiez la version Node.js selon vos besoins
+          node-version: '20'  # Spécifiez la version Node.js selon vos besoins
 
       - name: Cache Node modules
         uses: actions/cache@v3
