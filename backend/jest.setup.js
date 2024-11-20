@@ -6,8 +6,6 @@ beforeAll(async () => {
     await mongoose.connect(url);
 });
 
-
-
 // Déconnexion de la base de données après tous les tests
 afterAll(async () => {
     await mongoose.disconnect();
