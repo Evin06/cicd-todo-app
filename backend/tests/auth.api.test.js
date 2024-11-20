@@ -10,20 +10,9 @@ const router = require('../routes/index');  // Remplacez par le chemin de votre 
 app.use(express.json());
 app.use(router);
 
-// Connexion à une base de données temporaire (utilisée uniquement pour les tests)
-beforeAll(async () => {
-  const url = 'mongodb://localhost:27017/test_db'; // Base de données pour les tests
-  await mongoose.connect(url);
-});
-
 // Nettoyage de la base de données après chaque test
 afterEach(async () => {
   await UserModel.deleteMany();
-});
-
-// Déconnexion de la base de données après tous les tests
-afterAll(async () => {
-  await mongoose.disconnect();
 });
 
 // Test de la connexion avec des identifiants valides
