@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
+require('dotenv').config();  // Charge le fichier .env
 
 // Connexion à une base de données temporaire (utilisée uniquement pour les tests)
 beforeAll(async () => {
-    const url = 'mongodb://localhost:27017/test_db'; // Base de données pour les tests
+    const url = process.env.DB_URL; // Base de données pour les tests
     await mongoose.connect(url);
 });
 

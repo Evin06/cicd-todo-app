@@ -41,7 +41,7 @@ describe("Todo Routes", () => {
     expect(TodoModel.prototype.save).toHaveBeenCalled();
   });
 
-  /*
+  
   test("POST /todo/add - should return 400 if token is missing", async () => {
     const newTodo = { text: "Test todo" };
 
@@ -58,7 +58,7 @@ describe("Todo Routes", () => {
     TodoModel.updateOne.mockResolvedValue({ modifiedCount: 1 });
 
     const response = await request(app)
-      .patch(`/todo/${todoId}`)
+      .patch(`/api/todo/${todoId}`)
       .send(updates);
 
     expect(TodoModel.updateOne).toHaveBeenCalledWith(
@@ -74,13 +74,14 @@ describe("Todo Routes", () => {
 
     TodoModel.findOneAndDelete.mockResolvedValue();
 
-    const response = await request(app).post(`/api/todo/${todoId}`);
+    const response = await request(app).delete(`/api/todo/${todoId}`);
 
     expect(TodoModel.findOneAndDelete).toHaveBeenCalledWith({ _id: expect.any(Object) });
     expect(response.status).toBe(200);
   });
 
   test("GET /todos - should fetch all todos for the user", async () => {
+
     const todos = [{ text: "First todo" }, { text: "Second todo" }];
     TodoModel.find.mockResolvedValue(todos);
 
@@ -93,5 +94,5 @@ describe("Todo Routes", () => {
     expect(response.status).toBe(200);
     expect(response.body).toEqual(todos);
   });
-  */
+  
 });

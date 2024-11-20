@@ -10,10 +10,8 @@ router.post("/add", async (req, res) => {
   const token = req.cookies?.token;
   if (token) {
     const decodedToken = jsonwebtoken.verify(token, keyPub);
-    console.log("Decoded Token:", decodedToken);
     if(ObjectId.isValid(decodedToken.sub)) {
       const body = req.body;
-      console.log("Body:", req.body);
       const todo = new TodoModel({
         text: body.text,
         completed: false,
@@ -55,7 +53,7 @@ router.patch("/:id", async (req, res) => {
 });
 
 // delete todo
-router.post("/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   const query = { _id: new ObjectId(req.params.id) };
   if(ObjectId.isValid(req.params.id)) {
     try {
@@ -78,13 +76,14 @@ router.get("/", async (req, res) => {
     if(ObjectId.isValid(decodedToken.sub)) {
       const query = { user_id: new ObjectId(decodedToken.sub) };
       try {
-        const todos = await TodoModel.find(query).select("-__v").exec();
+        const todos = await TodoModel.find(query);
         if (todos) {
           res.status(200).json(todos);
         } else {
           res.status(404).json(null);
         }
       } catch (err) {
+        console.log(query)
         console.error("GET ALL TODO: ", err);
         res.status(400).json(null);
       }
