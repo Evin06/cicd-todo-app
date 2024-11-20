@@ -10,8 +10,10 @@ router.post("/add", async (req, res) => {
   const token = req.cookies?.token;
   if (token) {
     const decodedToken = jsonwebtoken.verify(token, keyPub);
+    console.log("Decoded Token:", decodedToken);
     if(ObjectId.isValid(decodedToken.sub)) {
       const body = req.body;
+      console.log("Body:", req.body);
       const todo = new TodoModel({
         text: body.text,
         completed: false,
