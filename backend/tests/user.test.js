@@ -15,8 +15,9 @@ app.use(router);
 // Mock dependencies
 jest.mock("bcrypt");
 jest.mock("jsonwebtoken");
-jest.mock("../database/models/user.model");
+//jest.mock("../database/models/user.model");
 jest.mock("../database/models/todo.model");
+
 
 describe("User routes", () => {
   let token;
@@ -62,7 +63,7 @@ describe("User routes", () => {
       expect(response.body).toBe("Un compte avec cet email exist déjà!");
     });
   });
-/*
+
   describe("DELETE /delete", () => {
     it("should delete the current user successfully", async () => {
       jsonwebtoken.verify.mockReturnValue({ sub: userId }); // Mock token verification
@@ -144,6 +145,6 @@ describe("User routes", () => {
       expect(response.status).toBe(200);
       expect(response.body.message).toBe("test");
     });
-  });*/
+  });
   
 });
