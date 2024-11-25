@@ -13,7 +13,7 @@ describe('Todo Add Test', () => {
   it('should add new task after login', () => {
     // Se connecter avant d'ajouter une tâche
     cy.visit('http://localhost:5173/login')
-    cy.get('input[name="email"]').type('newuser@example.com')
+    cy.get('input[name="email"]').type('newuser2@example.com')
     cy.get('input[name="password"]').type('password123')
     cy.get('button[type="submit"]').click()
     // Vérifier que l'utilisateur est redirigé vers la page d'accueil
