@@ -1,5 +1,5 @@
 # Utiliser une image Node pour le backend
-FROM node:18
+FROM node:latest
 
 # Définir le dossier de travail
 WORKDIR /app
