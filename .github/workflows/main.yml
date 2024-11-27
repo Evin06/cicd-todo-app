@@ -84,5 +84,6 @@ jobs:
       - name: Install dependencies and audit (Backend)
         working-directory: ./backend
         run: |
-          npm run test:dev
+          npx jest --watchAll
+
 
