@@ -3,19 +3,19 @@ name: CI/CD Workflow
 on:
   push:
     branches:
-      - main  # Déclenchement du déploiement de test sur chaque push sur la branche principale
+      - main # Déclenchement du déploiement de test sur chaque push sur la branche principale
       
 jobs:
   test-deployment:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         
       - name: Set up Node.js (Frontend & Backend)
         uses: actions/setup-node@v3
         with:
-          node-version: '18'  # Spécifiez la version Node.js selon vos besoins
+          node-version: '20'  # Spécifiez la version Node.js selon vos besoins
 
       - name: Cache Node modules
         uses: actions/cache@v3
@@ -28,26 +28,51 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # Installation des dépendances et audit pour le frontend
+  frontend-tasks:
+    runs-on: ubuntu-latest
+    needs: test-deployment
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
       - name: Install dependencies and audit (Frontend)
         working-directory: ./frontend
         run: |
           npm install
           npm audit
 
-      # Installation des dépendances et audit pour le backend
+      - name: Linting du code (Frontend)
+        working-directory: ./frontend
+        run: npm run lint
+
+  backend-tasks:
+    runs-on: ubuntu-latest
+    needs: test-deployment
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
       - name: Install dependencies and audit (Backend)
         working-directory: ./backend
         run: |
           npm install
           npm audit
 
-      # Linting pour le frontend
-      - name: Linting du code (Frontend)
-        working-directory: ./frontend
-        run: npm run lint
-
-      # Linting pour le backend
       - name: Linting du code (Backend)
         working-directory: ./backend
         run: npm run lint
+
+      - name: Install dependencies and audit (Backend)
+        working-directory: ./backend
+        run: |
+          npm test
