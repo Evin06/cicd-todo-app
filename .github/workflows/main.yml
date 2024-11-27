@@ -83,11 +83,8 @@ jobs:
       - name: Run Jest tests (Backend)
         working-directory: ./backend
         run: |
-          npx jest --runInBand  # Exécuter les tests backend
+          npx jest --coverage # Exécuter les tests backend
 
       - name: Stop docker-compose after backend tasks
         run: |
           docker compose down -v  # Arrêter Docker une fois les tests terminés
-
-
-
