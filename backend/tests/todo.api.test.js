@@ -20,6 +20,7 @@ describe("Todo Routes", () => {
   beforeEach(() => {
     token = "mockedToken";
     decodedToken = { sub: "validUserId" };
+    console.log(decodedToken);
     jsonwebtoken.verify.mockImplementation(() => ({ sub: "507f191e810c19729de860ea" }));
   });
 
