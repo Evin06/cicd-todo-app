@@ -71,3 +71,8 @@ jobs:
       - name: Linting du code (Backend)
         working-directory: ./backend
         run: npm run lint
+
+      - name: Install dependencies and audit (Backend)
+        working-directory: ./backend
+        run: |
+          npm test
