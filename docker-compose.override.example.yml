@@ -1,0 +1,7 @@
+services:
+
+  # Backend (Node.js)    
+  backend:
+    environment:
+      - DB_URL=
+      - TEST="marchebien"
