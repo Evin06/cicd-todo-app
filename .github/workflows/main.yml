@@ -87,7 +87,7 @@ jobs:
 
       - name: Stop docker-compose after backend tasks
         run: |
-          docker-compose down -v  # Arrêter Docker une fois les tests terminés
+          docker compose down -v  # Arrêter Docker une fois les tests terminés
 
 
 
