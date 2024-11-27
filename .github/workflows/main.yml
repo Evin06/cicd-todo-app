@@ -54,9 +54,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Run docker-compose (detached mode)
+      - name: Run docker compose (detached mode)
         run: |
-          docker-compose up -d  # Lance Docker Compose en mode détaché
+          docker compose up -d  # Lance Docker Compose en mode détaché
 
   backend-tasks:
     runs-on: ubuntu-latest
