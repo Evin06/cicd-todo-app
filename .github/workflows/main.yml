@@ -54,18 +54,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Run docker-compose
-        uses: hoverkraft-tech/compose-action@v2.0.1
-        with:
-          compose-file: "./docker-compose.yml"
+      - name: Run docker-compose (detached mode)
+        run: |
+          docker-compose up -d  # Lance Docker Compose en mode détaché
 
   backend-tasks:
     runs-on: ubuntu-latest
-    needs: dbtest
+    needs: dbtest  # Attendre la fin de dbtest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -81,9 +80,14 @@ jobs:
         working-directory: ./backend
         run: npm run lint
 
-      - name: Install dependencies and audit (Backend)
+      - name: Run Jest tests (Backend)
         working-directory: ./backend
         run: |
-          npx jest --watchAll
+          npx jest --runInBand  # Exécuter les tests backend
+
+      - name: Stop docker-compose after backend tasks
+        run: |
+          docker-compose down -v  # Arrêter Docker une fois les tests terminés
+
 
 
