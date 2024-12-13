@@ -31,7 +31,7 @@ describe("User routes", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-/*
+
   describe("POST /add", () => {
     it("should create a new user successfully", async () => {
       const mockUser = { name: "Johns", email: "joashns@example.com", password: "password123" };
@@ -45,7 +45,6 @@ describe("User routes", () => {
 
       const response = await request(app)
         .post("/api/user/add")
-        .set("Cookie", [`token=${token}`])
         .send(mockUser);
 
       expect(response.status).toBe(200);
@@ -70,7 +69,7 @@ describe("User routes", () => {
       expect(response.body).toBe("Un compte avec cet email exist déjà!");
     });
   });
-*/
+/*
 
   describe("DELETE /delete", () => {
     it("should delete the current user successfully", async () => {
