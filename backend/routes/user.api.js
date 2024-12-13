@@ -8,28 +8,33 @@ const { keyPub } = require("../env/keys");
 const TodoModel = require("../database/models/todo.model");
 
 const cleanUser = (user) => {
-  // eslint-disable-next-line no-unused-vars
-  const { password, ...cleanedUser } = user.toObject();
+  if (!user) {
+    console.error("Utilisateur non défini!");
+    return null;  // Retourne null si l'utilisateur est indéfini
+  }
+
+  const { password, ...cleanedUser } = user.toObject ? user.toObject() : user;
   return cleanedUser;
 };
 
 // create a new user
 router.post("/add", async (req, res) => {
   const body = req.body;
-  const user = new UserModel({
+  let user = new UserModel({
     name: body.name,
     email: body.email,
     password: await bcrypt.hash(body.password, 8),
   });
   try {
-    await user.save();
-    res.status(200).json(cleanUser(user));
+    const savedUser = await user.save();  // Sauvegarde de l'utilisateur
+    res.status(200).json(cleanUser(savedUser));  // Retourne l'utilisateur sans le mot de passe
   } catch (err) {
-    console.error("CREATE USER: ", err);
+    
     let errorMsg = "Erreur lors de l'inscription!";
     if(err && err.code === 11000) {
       errorMsg = "Un compte avec cet email exist déjà!";
     }
+    console.error("CREATE USER: ", errorMsg);
     res.status(400).json(errorMsg);
   }
 });
