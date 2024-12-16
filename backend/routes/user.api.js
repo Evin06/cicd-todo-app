@@ -93,6 +93,7 @@ router.patch("/edit", async (req, res) => {
 });
 
 // get the current user
+// not a function .select("-_id -password -__v").exec();
 router.get("/", async (req, res) => {
   const token = req.cookies?.token;
 
