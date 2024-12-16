@@ -42,6 +42,7 @@ router.post("/add", async (req, res) => {
 // delete current user
 router.delete("/delete", async (req, res) => {
   const token = req.cookies?.token;
+
   if (token) {
     const decodedToken = jsonwebtoken.verify(token, keyPub);
     if(ObjectId.isValid(decodedToken.sub)) {
@@ -94,6 +95,10 @@ router.patch("/edit", async (req, res) => {
 // get the current user
 router.get("/", async (req, res) => {
   const token = req.cookies?.token;
+
+  console.log(req.cookies);
+  console.log(req.signedCookies);
+
   if (token) {
     try {
       const decodedToken = jsonwebtoken.verify(token, keyPub);
