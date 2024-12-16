@@ -17,7 +17,7 @@ const errorMsg = ref('');
 const schema = Yup.object().shape({
   email: Yup.string().email('Format email incorrect').required('Vous devez renseigner ce champ'),
   password: Yup.string()
-    .min(8, 'Le mot de passe doit faire au moins 5 caractères')
+    .min(8, 'Le mot de passe doit faire au moins 8 caractères')
     .required('Vous devez renseigner ce champ'),
   confirmation: Yup.string()
     .required('Vous devez renseigner ce champ')
