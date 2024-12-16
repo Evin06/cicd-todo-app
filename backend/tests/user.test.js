@@ -1,15 +1,17 @@
 const request = require("supertest");
 const express = require('express');
-const UserModel = require("../database/models/user.model");
-const TodoModel = require("../database/models/todo.model");
-const bcrypt = require("bcrypt");
 const jsonwebtoken = require("jsonwebtoken");
-const { keyPub } = require("../env/keys");
-
 const app = express();
 const router = require('../routes/index');  // Remplacez par le chemin de votre fichier router
+const TodoModel = require("../database/models/todo.model");
+const UserModel = require("../database/models/user.model");
+
+const bcrypt = require("bcrypt");
+
+
 
 app.use(express.json());
+app.use(require("cookie-parser")());
 app.use(router);
 
 // Mock dependencies
@@ -20,19 +22,23 @@ jest.mock("../database/models/user.model");
 jest.mock("../database/models/todo.model");
 
 describe("User routes", () => {
-  let token;
-  let userId;
 
-  beforeAll(() => {
-    userId = "123455"; // Mock user ID for token generation
-    token = jsonwebtoken.sign({ sub: userId }, keyPub, { expiresIn: "1h" });
-  });
-
-  afterEach(() => {
+    let token;
+    let decodedToken;
+    let userId = "507f191e810c19729de860ea"; // Mock user ID for token generation
+  
+    beforeEach(() => {
+      token = "mockedToken";
+      decodedToken = { sub: "validUserId" };
+      jsonwebtoken.verify.mockImplementation(() => ({ sub: "507f191e810c19729de860ea" }));
+    });
+    
+  afterAll(() => {
     jest.clearAllMocks();
   });
 
   describe("POST /add", () => {
+
     it("should create a new user successfully", async () => {
       const mockUser = { name: "Johns", email: "joashns@example.com", password: "password123" };
       bcrypt.hash.mockResolvedValue("hashedpassword"); // Mock bcrypt hashing
@@ -54,6 +60,7 @@ describe("User routes", () => {
 
     
     it("should return error when user already exists", async () => {
+
       const mockUser = { name: "John", email: "john@example.com", password: "password123" };
       const error = new Error();
       error.code = 11000; // Simulate unique constraint error
@@ -62,20 +69,20 @@ describe("User routes", () => {
 
       const response = await request(app)
         .post("/api/user/add")
-        .set("Cookie", [`token=${token}`])
         .send(mockUser);
 
       expect(response.status).toBe(400);
       expect(response.body).toBe("Un compte avec cet email exist déjà!");
     });
   });
-/*
+
 
   describe("DELETE /delete", () => {
+
     it("should delete the current user successfully", async () => {
-      jsonwebtoken.verify.mockReturnValue({ sub: userId }); // Mock token verification
-      UserModel.findOneAndDelete.mockResolvedValue(true);
-      TodoModel.deleteMany.mockResolvedValue(true);
+
+      jsonwebtoken.verify.mockReturnValue({ sub: "507f191e810c19729de860ea" }); // Mock token verification
+      UserModel.findOneAndDelete.mockResolvedValue();
 
       const response = await request(app)
         .delete("/api/user/delete")
@@ -83,6 +90,7 @@ describe("User routes", () => {
 
       expect(response.status).toBe(200);
       expect(response.body).toBeNull();
+
     });
 
     it("should return error if no token is provided", async () => {
@@ -92,7 +100,7 @@ describe("User routes", () => {
       expect(response.body).toBeNull();
     });
   });
-/*
+
   describe("PATCH /edit", () => {
     it("should update user data successfully", async () => {
       const updatedData = { name: "Updated Name" };
@@ -122,11 +130,12 @@ describe("User routes", () => {
   });
 
   describe("GET /", () => {
+    /*
     it("should get the current user data successfully", async () => {
-      const userData = { name: "John", email: "john@example.com" };
-      jsonwebtoken.verify.mockReturnValue({ sub: userId });
 
-      UserModel.findById.mockResolvedValue(userData);
+      jsonwebtoken.verify.mockReturnValue({ sub: "507f191e810c19729de860ea" });
+
+      UserModel.findOne.mockResolvedValue();
 
       const response = await request(app)
         .get("/api/user")
@@ -135,8 +144,9 @@ describe("User routes", () => {
       expect(response.status).toBe(200);
       expect(response.body.name).toBe(userData.name);
       expect(response.body.email).toBe(userData.email);
-    });
 
+    });
+*/
     it("should return error if no token is provided", async () => {
       const response = await request(app).get("/api/user/");
 
@@ -153,6 +163,6 @@ describe("User routes", () => {
       expect(response.body.message).toBe("test");
     });
   });
-*/
+
 });
   
