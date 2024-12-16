@@ -83,7 +83,6 @@ router.get("/", async (req, res) => {
           res.status(404).json(null);
         }
       } catch (err) {
-        console.log(query)
         console.error("GET ALL TODO: ", err);
         res.status(400).json(null);
       }
