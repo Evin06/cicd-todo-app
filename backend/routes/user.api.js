@@ -96,15 +96,10 @@ router.patch("/edit", async (req, res) => {
 router.get("/", async (req, res) => {
   const token = req.cookies?.token;
 
-  console.log(req.cookies);
-  console.log(req.signedCookies);
-
   if (token) {
     try {
       const decodedToken = jsonwebtoken.verify(token, keyPub);
       const user = await UserModel.findById(decodedToken.sub)
-        .select("-_id -password -__v")
-        .exec();
       if (user) {
         res.status(200).json(user);
       } else {

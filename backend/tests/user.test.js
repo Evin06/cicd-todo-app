@@ -130,23 +130,34 @@ describe("User routes", () => {
   });
 
   describe("GET /", () => {
-    /*
+    
     it("should get the current user data successfully", async () => {
+
+      const mockUser = { name: "Johns", email: "joashns@example.com", password: "password123" };
+      
+      bcrypt.hash.mockResolvedValue("hashedpassword"); // Mock bcrypt hashing
+
+      UserModel.prototype.save = jest.fn().mockResolvedValue({
+        name: mockUser.name,
+        email: mockUser.email,
+        password: mockUser.password
+      });
 
       jsonwebtoken.verify.mockReturnValue({ sub: "507f191e810c19729de860ea" });
 
-      UserModel.findOne.mockResolvedValue();
+      UserModel.findById.mockResolvedValue(mockUser);
 
       const response = await request(app)
         .get("/api/user")
         .set("Cookie", `token=${token}`);
 
+      console.log(response.body);
       expect(response.status).toBe(200);
-      expect(response.body.name).toBe(userData.name);
-      expect(response.body.email).toBe(userData.email);
+      expect(response.body.name).toBe(mockUser.name);
+      expect(response.body.email).toBe(mockUser.email);
 
     });
-*/
+
     it("should return error if no token is provided", async () => {
       const response = await request(app).get("/api/user/");
 
