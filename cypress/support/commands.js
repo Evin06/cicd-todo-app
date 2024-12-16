@@ -1,25 +1,22 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+// Commande pour se connecter
+Cypress.Commands.add('loginPage', () => {
+    cy.visit('http://localhost:5173/login'); 
+  });
+  
+  Cypress.Commands.add('registerPage', () => {
+    cy.visit('http://localhost:5173/register'); 
+  });
+  
+  Cypress.Commands.add('profilePage', () => {
+    cy.get('img[alt="Profile"]').click({ force: true });
+    cy.contains('Mon Profile').click();
+  });
+  
+  Cypress.Commands.add('login', (email, password) => {
+    cy.loginPage(); 
+    cy.get('input[name="email"]').type(email);
+    cy.get('input[name="password"]').type(password);
+    cy.get('button[type="submit"]').click();
+    cy.url().should('include', '/');
+  });
+  
