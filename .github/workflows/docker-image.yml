@@ -58,6 +58,8 @@ jobs:
             PATCH=$((PATCH + 1))
           else
             echo "No new version required."
+            NEW_VERSION=""
+            echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
             exit 0
           fi
           NEW_VERSION="v$MAJOR.$MINOR.$PATCH"
@@ -88,12 +90,10 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and Push Backend Image
+        if: env.NEW_VERSION != ''
         env:
           NEW_VERSION: ${{ env.NEW_VERSION }}
         run: |
-          if [[ -z "$NEW_VERSION" || "$NEW_VERSION" == "v" ]]; then
-            echo "Error: Version not set or invalid." && exit 1
-          fi
           docker build -t ${{ secrets.DOCKER_USERNAME }}/backend:$NEW_VERSION -f backend/Dockerfile ./backend
           docker push ${{ secrets.DOCKER_USERNAME }}/backend:$NEW_VERSION
 
@@ -116,11 +116,9 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and Push Frontend Image
+        if: env.NEW_VERSION != ''
         env:
           NEW_VERSION: ${{ env.NEW_VERSION }}
         run: |
-          if [[ -z "$NEW_VERSION" || "$NEW_VERSION" == "v" ]]; then
-            echo "Error: Version not set or invalid." && exit 1
-          fi
           docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:$NEW_VERSION -f frontend/Dockerfile ./frontend
           docker push ${{ secrets.DOCKER_USERNAME }}/frontend:$NEW_VERSION
