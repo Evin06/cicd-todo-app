@@ -89,6 +89,11 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Debug NEW_VERSION
+        run: echo "NEW_VERSION is $NEW_VERSION"
+        env:
+          NEW_VERSION: ${{ env.NEW_VERSION }}
+
       - name: Build and Push Backend Image
         if: env.NEW_VERSION != ''
         env:
