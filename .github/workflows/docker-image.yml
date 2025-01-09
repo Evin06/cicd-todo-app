@@ -66,6 +66,7 @@ jobs:
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
 
       - name: Create New Tag
+        if: env.NEW_VERSION != ''
         run: |
           git tag $NEW_VERSION
           git push origin $NEW_VERSION
