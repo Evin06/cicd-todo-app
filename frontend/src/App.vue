@@ -19,7 +19,7 @@ const isAuthenticated = computed(() => userStore.isAuthenticated);
 </script>
 
 <template>
-  <div class="antialiased bg-gray-100 dark:bg-gray-900 h-screen">
+  <div class="antialiased bg-red-500 dark:bg-gray-900 h-screen">
     <AppHeader :isAuthenticated="isAuthenticated ?? false" @logout="logout" :menu="menu" />
     <main
       class="flex-1 relative z-0 bg-gray-200 focus:outline-none dark:bg-gray-700 rounded-md m-4"
