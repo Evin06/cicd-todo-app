@@ -26,4 +26,5 @@ networks:
 # Définition des volumes globaux
 volumes:
   mongo-data:
+
   
