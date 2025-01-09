@@ -24,3 +24,4 @@ COPY --from=build /app/dist /dist
 
 # Le dossier /dist sera partagé avec le backend grâce à docker-compose
 
+
